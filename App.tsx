@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Image } from 'react-native';
+
 
 
 
@@ -24,17 +25,20 @@ const carregarProdutos = async()=>{
   setListProdutos(data);   
 }
 
-const [listProdutos, setListProdutos] = useState([])
+const [listProdutos, setListProdutos] = useState<Produto[]>([])
 
   return (
+    <ScrollView>
     <View style={styles.container}>
     {listProdutos.map((prod)=>
     <View style={styles.listItem} key={prod.id}>
-      <Text>{prod.title}</Text>
-    <Text>{prod.price}</Text>
+      <Image source={{uri: prod.image}} style={styles.image} />
+      <Text style={styles.titulo}>{prod.title}</Text>
+    <Text style={styles.preco}>{prod.price.toLocaleString("pt-BR",{style:"currency", currency:"BRL"})}</Text>
     </View>)}
       <StatusBar style="auto" />
     </View>
+    </ScrollView>
   );
 }
 
@@ -46,9 +50,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   listItem:{
+    backgroundColor: '#b9f4fcff',
     flexDirection: 'row',
     alignItems: 'flex-start',
     padding: 10,
     margin: 10,
-  }
-});
+    flexWrap: 'wrap',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {width: 2, height:2  },
+    shadowOpacity:0.5,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  image:{
+      width: '50%',
+      height: 50,
+  },
+titulo:{
+  width: '50%',
+  fontSize: 16,
+  fontWeight: 'bold',
+  margin: 10
+},
+preco:{
+  fontSize: 14,
+  margin: 10
+}
+})
